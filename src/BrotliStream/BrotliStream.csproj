@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <Product>bStream</Product>
+    <ProjectDepsFileName>$(Product).deps.json</ProjectDepsFileName>
+    <PublishSingleFile>True</PublishSingleFile>
+  </PropertyGroup>
+
+</Project>
