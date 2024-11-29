@@ -40,7 +40,7 @@ namespace BrotliStreamApp
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"An error occurred while compressing\n{ex}");
+                    Console.WriteLine($"An error occurred while compressing\n\n{ex}");
                     return;
                 }
             }
@@ -53,7 +53,13 @@ namespace BrotliStreamApp
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"An error occurred while decompressing\n{ex}");
+                    Console.WriteLine($"An error occurred while decompressing\n\n{ex}");
+
+                    if (ex is InvalidOperationException)
+                    {
+                        Console.WriteLine("\nThe decompressor reported an invalid operation. This usually means the input is not brotli compressed");
+                    }
+
                     return;
                 }
             }
