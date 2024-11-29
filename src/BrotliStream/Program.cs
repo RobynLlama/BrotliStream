@@ -22,7 +22,7 @@ namespace BrotliStreamApp
 
             if (!input.Exists)
             {
-                Console.WriteLine($"File {input.Name} cannot be read");
+                Console.WriteLine($"File {input.Name} cannot be read\nPlease ensure the target file exists and bStream has permission to access it");
                 return;
             }
 
@@ -33,13 +33,29 @@ namespace BrotliStreamApp
 
             if (CompressMode)
             {
-                output = CompressBrotli(fileBytes);
-                ext = ".brt";
+                try
+                {
+                    output = CompressBrotli(fileBytes);
+                    ext = ".brt";
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"An error occurred while compressing\n{ex}");
+                    return;
+                }
             }
             else
             {
-                output = DecompressBrotli(fileBytes);
-                ext = ".bin";
+                try
+                {
+                    output = DecompressBrotli(fileBytes);
+                    ext = ".bin";
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"An error occurred while decompressing\n{ex}");
+                    return;
+                }
             }
 
             FileInfo oFile = new(Path.GetFileNameWithoutExtension(input.FullName) + ext);
@@ -47,11 +63,22 @@ namespace BrotliStreamApp
             if (!oFile.Exists)
             {
                 Console.WriteLine($"Writing to {oFile.FullName}");
-                File.WriteAllBytes(oFile.FullName, output);
+
+                try
+                {
+                    File.WriteAllBytes(oFile.FullName, output);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"An error occurred while writing to the output file\nEnsure bStream has write permission in the folder containing the input file\n{ex}");
+                    return;
+                }
+
             }
             else
             {
-                Console.WriteLine("Error: Output file already exists!");
+                Console.WriteLine($"Error: Output file already exists!\nRefusing to overwrite existing file: {oFile.Name}");
+                return;
             }
 
         }
